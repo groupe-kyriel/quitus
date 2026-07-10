@@ -7,16 +7,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
-    --kyriel:#2C5F75;
-    --kyriel-dark:#1A3A4A;
-    --kyriel-lt:#EAF2F6;
-    --ink:#1a2430;
-    --muted:#5b6b7c;
-    --line:#c9d4de;
-    --bg:#eef2f6;
-    --card:#ffffff;
-    --ok:#1e8e5a;
-    --danger:#c0392b;
+    --kyriel:#2C5F75;--kyriel-dark:#1A3A4A;--kyriel-lt:#EAF2F6;
+    --ink:#1a2430;--muted:#5b6b7c;--line:#c9d4de;--bg:#eef2f6;--card:#fff;
+    --ok:#1e8e5a;--danger:#c0392b;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);padding:12px;padding-bottom:90px;}
@@ -32,7 +25,7 @@
   .type-btn{flex:1;min-width:110px;padding:14px 10px;border:2px solid var(--line);border-radius:8px;background:#fff;font-size:15px;font-weight:600;color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;}
   .type-btn.active{border-color:var(--kyriel);background:var(--kyriel);color:#fff}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .grid .full{grid-column:1 / -1}
+  .grid .full{grid-column:1/-1}
   @media(max-width:560px){.grid{grid-template-columns:1fr}}
   label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
   input[type=text],input[type=datetime-local],textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink);}
@@ -66,13 +59,11 @@
 </style>
 </head>
 <body>
-
 <div class="sheet">
   <header>
     <div class="brand">GROUPE KYRIEL<small>EXPERTS EN MENUISERIE</small></div>
     <div class="doc">QUITUS<br>DE LEVÉE</div>
   </header>
-
   <main>
     <h2>Type d'intervention</h2>
     <div class="types" id="types">
@@ -80,37 +71,20 @@
       <div class="type-btn" data-v="GPA">GPA</div>
       <div class="type-btn" data-v="SAV Payant">SAV Payant</div>
     </div>
-
     <h2>Informations</h2>
     <div class="grid">
-      <div class="full">
-        <label>Résidence / Adresse</label>
-        <input type="text" id="residence" placeholder="Nom de la résidence, adresse">
-      </div>
-      <div>
-        <label>Logement</label>
-        <input type="text" id="logement" placeholder="N° logement">
-      </div>
-      <div>
-        <label>Date / Heure RDV</label>
-        <input type="datetime-local" id="rdv">
-      </div>
-      <div class="full">
-        <label>Nom de l'occupant</label>
-        <input type="text" id="occupant" placeholder="Nom Prénom">
-      </div>
+      <div class="full"><label>Résidence / Adresse</label><input type="text" id="residence" placeholder="Nom de la résidence, adresse"></div>
+      <div><label>Logement</label><input type="text" id="logement" placeholder="N° logement"></div>
+      <div><label>Date / Heure RDV</label><input type="datetime-local" id="rdv"></div>
+      <div class="full"><label>Nom de l'occupant</label><input type="text" id="occupant" placeholder="Nom Prénom"></div>
     </div>
-
     <h2>Tâches réalisées</h2>
     <div id="tasks"></div>
     <button class="addtask" onclick="addTask()">+ Ajouter une tâche</button>
-
     <div class="attest" style="margin-top:14px">
       Monsieur, Madame <strong><span id="attestName">…</span></strong> constate(nt) que l'entreprise
-      <strong>KYRIEL CONSTRUCTION</strong> a bien effectué les travaux de reprise mentionnés
-      ci-dessus, ce qui constitue la levée des réserves.
+      <strong>KYRIEL CONSTRUCTION</strong> a bien effectué les travaux de reprise mentionnés ci-dessus, ce qui constitue la levée des réserves.
     </div>
-
     <h2>Photos</h2>
     <input type="file" id="photoCam" accept="image/*" capture="environment" style="display:none">
     <input type="file" id="photoGal" accept="image/*" multiple style="display:none">
@@ -119,60 +93,39 @@
       <button class="addtask" style="flex:1" onclick="document.getElementById('photoGal').click()">🖼️ Galerie</button>
     </div>
     <div id="photoGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px"></div>
-
     <h2>Commentaires &amp; Signatures</h2>
     <div class="sigs" style="margin-bottom:14px">
-      <div>
-        <label>Commentaire Kyriel (technicien)</label>
-        <textarea id="comments" rows="3" placeholder="Observations du technicien…"></textarea>
-      </div>
-      <div>
-        <label>Commentaire du client</label>
-        <textarea id="commentsClient" rows="3" placeholder="Remarques du client…"></textarea>
-      </div>
+      <div><label>Commentaire Kyriel (technicien)</label><textarea id="comments" rows="3" placeholder="Observations du technicien…"></textarea></div>
+      <div><label>Commentaire du client</label><textarea id="commentsClient" rows="3" placeholder="Remarques du client…"></textarea></div>
     </div>
     <div class="sigs">
       <div class="sigbox">
-        <div class="sighead">Représentant KYRIEL CONSTRUCTION
-          <button class="clear" onclick="clearSig('sigK')">Effacer</button>
-        </div>
+        <div class="sighead">Représentant KYRIEL CONSTRUCTION<button class="clear" onclick="clearSig('sigK')">Effacer</button></div>
         <canvas class="sig" id="sigK"></canvas>
       </div>
       <div class="sigbox">
-        <div class="sighead">Client — « Bon pour travaux exécutés »
-          <button class="clear" onclick="clearSig('sigC')">Effacer</button>
-        </div>
+        <div class="sighead">Client — « Bon pour travaux exécutés »<button class="clear" onclick="clearSig('sigC')">Effacer</button></div>
         <canvas class="sig" id="sigC"></canvas>
         <div class="mention">La signature vaut mention « Bon pour travaux exécutés » datée de ce jour.</div>
       </div>
     </div>
   </main>
 </div>
-
 <div class="bar">
   <button class="btn btn-reset" onclick="resetAll()">Nouveau</button>
   <button class="btn btn-pdf" onclick="genPDF()">📄 Générer le PDF signé</button>
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
-/* ── TYPE ── */
 let typeSel="";
 document.querySelectorAll('#types .type-btn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('#types .type-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); typeSel=b.dataset.v;
-  });
+  b.addEventListener('click',()=>{document.querySelectorAll('#types .type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeSel=b.dataset.v;});
 });
-
-/* ── TÂCHES ── */
 let taskId=0;
 function addTask(txt=""){
   taskId++;
-  const d=document.createElement('div');
-  d.className='task'; d.id='task'+taskId;
-  d.innerHTML=`
-    <textarea placeholder="Description de la tâche réalisée…">${txt}</textarea>
+  const d=document.createElement('div');d.className='task';d.id='task'+taskId;
+  d.innerHTML=`<textarea placeholder="Description de la tâche réalisée…">${txt}</textarea>
     <div class="task-status">
       <div class="fait"><span>Fait ?</span><div class="fbtns">
         <button class="fbtn oui" onclick="setVal(this,'fait','OUI')">OUI</button>
@@ -190,316 +143,184 @@ function addTask(txt=""){
     </div>`;
   document.getElementById('tasks').appendChild(d);
 }
-function setVal(btn,field,v){
-  btn.parentElement.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
-  btn.classList.add('active');
-  btn.closest('.task').dataset[field]=v;
-}
+function setVal(btn,field,v){btn.parentElement.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');btn.closest('.task').dataset[field]=v;}
 addTask();
-
-document.getElementById('occupant').addEventListener('input',e=>{
-  document.getElementById('attestName').textContent=e.target.value||'…';
-});
-
-/* ── SIGNATURES ── */
+document.getElementById('occupant').addEventListener('input',e=>{document.getElementById('attestName').textContent=e.target.value||'…';});
 function setupSig(id){
-  const c=document.getElementById(id), ctx=c.getContext('2d');
-  function resize(){
-    const data=c.toDataURL(), r=c.getBoundingClientRect();
-    c.width=r.width*2; c.height=r.height*2;
-    ctx.scale(2,2); ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.strokeStyle='#16233a';
-    const img=new Image(); img.onload=()=>ctx.drawImage(img,0,0,r.width,r.height); img.src=data;
-  }
-  resize(); window.addEventListener('resize',resize);
-  let draw=false, last=null;
-  function pos(e){ const r=c.getBoundingClientRect(), t=e.touches?e.touches[0]:e; return {x:t.clientX-r.left,y:t.clientY-r.top}; }
-  function start(e){ e.preventDefault(); draw=true; last=pos(e); c.dataset.signed="1"; }
-  function move(e){ if(!draw)return; e.preventDefault(); const p=pos(e); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); last=p; }
-  function end(){ draw=false; }
-  c.addEventListener('mousedown',start); c.addEventListener('mousemove',move); window.addEventListener('mouseup',end);
-  c.addEventListener('touchstart',start,{passive:false}); c.addEventListener('touchmove',move,{passive:false}); c.addEventListener('touchend',end);
+  const c=document.getElementById(id),ctx=c.getContext('2d');
+  function resize(){const data=c.toDataURL(),r=c.getBoundingClientRect();c.width=r.width*2;c.height=r.height*2;ctx.scale(2,2);ctx.lineWidth=2.2;ctx.lineCap='round';ctx.strokeStyle='#16233a';const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,r.width,r.height);img.src=data;}
+  resize();window.addEventListener('resize',resize);
+  let draw=false,last=null;
+  function pos(e){const r=c.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};}
+  function start(e){e.preventDefault();draw=true;last=pos(e);c.dataset.signed="1";}
+  function move(e){if(!draw)return;e.preventDefault();const p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;}
+  function end(){draw=false;}
+  c.addEventListener('mousedown',start);c.addEventListener('mousemove',move);window.addEventListener('mouseup',end);
+  c.addEventListener('touchstart',start,{passive:false});c.addEventListener('touchmove',move,{passive:false});c.addEventListener('touchend',end);
 }
-function clearSig(id){ const c=document.getElementById(id); c.getContext('2d').clearRect(0,0,c.width,c.height); c.dataset.signed=""; }
-setupSig('sigK'); setupSig('sigC');
-
-/* ── PHOTOS ── */
+function clearSig(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed="";}
+setupSig('sigK');setupSig('sigC');
 let photos=[];
-function handleFiles(files){
-  [...files].forEach(f=>{
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      const img=new Image();
-      img.onload=()=>{
-        const max=1400; let w=img.width,h=img.height;
-        if(w>max||h>max){ const r=Math.min(max/w,max/h); w=Math.round(w*r); h=Math.round(h*r); }
-        const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
-        cv.getContext('2d').drawImage(img,0,0,w,h);
-        photos.push({data:cv.toDataURL('image/jpeg',0.72),w,h}); renderPhotos();
-      };
-      img.src=ev.target.result;
-    };
-    reader.readAsDataURL(f);
-  });
-}
-document.getElementById('photoCam').addEventListener('change',e=>{ handleFiles(e.target.files); e.target.value=''; });
-document.getElementById('photoGal').addEventListener('change',e=>{ handleFiles(e.target.files); e.target.value=''; });
-function renderPhotos(){
-  const g=document.getElementById('photoGrid'); g.innerHTML='';
-  photos.forEach((p,i)=>{
-    const d=document.createElement('div');
-    d.style.cssText='position:relative;border:1.5px solid var(--line);border-radius:8px;overflow:hidden';
-    d.innerHTML=`<img src="${p.data}" style="width:100%;height:90px;object-fit:cover;display:block">
-      <button onclick="delPhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(192,57,43,.92);color:#fff;border:none;border-radius:6px;width:26px;height:26px;font-size:15px;cursor:pointer">✕</button>`;
-    g.appendChild(d);
-  });
-}
-function delPhoto(i){ photos.splice(i,1); renderPhotos(); }
+function handleFiles(files){[...files].forEach(f=>{const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const max=1400;let w=img.width,h=img.height;if(w>max||h>max){const r=Math.min(max/w,max/h);w=Math.round(w*r);h=Math.round(h*r);}const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);photos.push({data:cv.toDataURL('image/jpeg',0.72),w,h});renderPhotos();};img.src=ev.target.result;};reader.readAsDataURL(f);});}
+document.getElementById('photoCam').addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
+document.getElementById('photoGal').addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
+function renderPhotos(){const g=document.getElementById('photoGrid');g.innerHTML='';photos.forEach((p,i)=>{const d=document.createElement('div');d.style.cssText='position:relative;border:1.5px solid var(--line);border-radius:8px;overflow:hidden';d.innerHTML=`<img src="${p.data}" style="width:100%;height:90px;object-fit:cover;display:block"><button onclick="delPhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(192,57,43,.92);color:#fff;border:none;border-radius:6px;width:26px;height:26px;font-size:15px;cursor:pointer">✕</button>`;g.appendChild(d);});}
+function delPhoto(i){photos.splice(i,1);renderPhotos();}
+function resetAll(){if(!confirm('Effacer tout le formulaire ?'))return;document.querySelectorAll('input,textarea').forEach(e=>e.value='');document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));typeSel='';document.getElementById('tasks').innerHTML='';addTask();clearSig('sigK');clearSig('sigC');photos=[];renderPhotos();document.getElementById('attestName').textContent='…';window.scrollTo(0,0);}
 
-/* ── RESET ── */
-function resetAll(){
-  if(!confirm('Effacer tout le formulaire ?')) return;
-  document.querySelectorAll('input,textarea').forEach(e=>e.value='');
-  document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active')); typeSel='';
-  document.getElementById('tasks').innerHTML=''; addTask();
-  clearSig('sigK'); clearSig('sigC');
-  photos=[]; renderPhotos();
-  document.getElementById('attestName').textContent='…';
-  window.scrollTo(0,0);
-}
-
-/* ── PDF ── */
 function genPDF(){
   const residence=document.getElementById('residence').value.trim();
   const occupant=document.getElementById('occupant').value.trim();
   const sigC=document.getElementById('sigC');
-  if(!typeSel){ alert('Sélectionnez le type : Réserve, GPA ou SAV Payant.'); return; }
-  if(!residence){ alert('Renseignez la résidence / adresse.'); return; }
-  if(!sigC.dataset.signed){ alert('La signature du client est requise.'); return; }
-
+  if(!typeSel){alert('Sélectionnez le type.');return;}
+  if(!residence){alert('Renseignez la résidence.');return;}
+  if(!sigC.dataset.signed){alert('Signature du client requise.');return;}
   const {jsPDF}=window.jspdf;
   const pdf=new jsPDF('p','mm','a4');
-  const W=210, M=16;
+  const W=210,M=16;
   let y=18;
+  const TEAL=[44,95,117],DARK=[26,58,74],INK=[26,36,48],GRAY=[91,107,124];
 
-  // Palette Kyriel 2026
-  const TEAL=[44,95,117];     // #2C5F75
-  const DARK=[26,58,74];      // #1A3A4A
-  const INK=[26,36,48];
-  const GRAY=[91,107,124];
+  // En-tête
+  pdf.setFillColor(...DARK);pdf.rect(0,0,W,26,'F');
+  pdf.setFillColor(...TEAL);pdf.rect(0,26,W,2,'F');
+  pdf.setTextColor(255);pdf.setFont('helvetica','bold');
+  pdf.setFontSize(16);pdf.text('GROUPE KYRIEL',M,12);
+  pdf.setFontSize(7);pdf.setFont('helvetica','normal');pdf.text('EXPERTS EN MENUISERIE',M,18);
+  pdf.setFontSize(14);pdf.setFont('helvetica','bold');pdf.text('QUITUS DE LEVÉE',W-M,15,{align:'right'});
+  y=36;pdf.setTextColor(...INK);
 
-  /* En-tête */
-  pdf.setFillColor(...DARK); pdf.rect(0,0,W,26,'F');
-  pdf.setTextColor(255); pdf.setFont('helvetica','bold');
-  pdf.setFontSize(16); pdf.text('GROUPE KYRIEL',M,12);
-  pdf.setFontSize(7); pdf.setFont('helvetica','normal'); pdf.text('EXPERTS EN MENUISERIE',M,18);
-  pdf.setFontSize(14); pdf.setFont('helvetica','bold'); pdf.text('QUITUS DE LEVÉE',W-M,15,{align:'right'});
-
-  // Barre teal sous l'en-tête
-  pdf.setFillColor(...TEAL); pdf.rect(0,26,W,2,'F');
-
-  y=36; pdf.setTextColor(...INK);
-
-  /* Type */
+  // Type
   pdf.setFontSize(10);
   ['Réserve','GPA','SAV Payant'].forEach((t,i)=>{
-    const x=M+i*62; pdf.setDrawColor(...TEAL);
-    if(t===typeSel){
-      pdf.setFillColor(...TEAL); pdf.rect(x,y-4,5,5,'FD');
-      pdf.setTextColor(255); pdf.setFontSize(7); pdf.text('X',x+1.4,y-0.2);
-      pdf.setFontSize(10); pdf.setTextColor(...INK);
-    } else pdf.rect(x,y-4,5,5);
+    const x=M+i*62;pdf.setDrawColor(...TEAL);
+    if(t===typeSel){pdf.setFillColor(...TEAL);pdf.rect(x,y-4,5,5,'FD');pdf.setTextColor(255);pdf.setFontSize(7);pdf.text('X',x+1.4,y-0.2);pdf.setFontSize(10);pdf.setTextColor(...INK);}
+    else pdf.rect(x,y-4,5,5);
     pdf.text(t,x+8,y);
   });
   y+=11;
 
-  /* Infos */
+  // Infos
   const rdvRaw=document.getElementById('rdv').value;
   let rdvTxt='';
-  if(rdvRaw){ const d=new Date(rdvRaw); rdvTxt=d.toLocaleDateString('fr-FR')+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
-  const info=[
-    ['RÉSIDENCE / ADRESSE',residence],
-    ['LOGEMENT',document.getElementById('logement').value],
-    ['DATE / HEURE RDV',rdvTxt],
-    ["NOM DE L'OCCUPANT",occupant],
-  ];
-  pdf.setFontSize(10);
-  info.forEach(([k,v])=>{
-    pdf.setFont('helvetica','bold'); pdf.setTextColor(...GRAY); pdf.text(k+' :',M,y);
-    pdf.setFont('helvetica','normal'); pdf.setTextColor(...INK); pdf.text(v||'—',M+52,y);
-    pdf.setDrawColor(200,210,220); pdf.line(M+52,y+1.3,W-M,y+1.3);
-    y+=8;
+  if(rdvRaw){const d=new Date(rdvRaw);rdvTxt=d.toLocaleDateString('fr-FR')+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}
+  [['RÉSIDENCE / ADRESSE',residence],['LOGEMENT',document.getElementById('logement').value],['DATE / HEURE RDV',rdvTxt],["NOM DE L'OCCUPANT",occupant]].forEach(([k,v])=>{
+    pdf.setFont('helvetica','bold');pdf.setTextColor(...GRAY);pdf.setFontSize(10);pdf.text(k+' :',M,y);
+    pdf.setFont('helvetica','normal');pdf.setTextColor(...INK);pdf.text(v||'—',M+52,y);
+    pdf.setDrawColor(200,210,220);pdf.line(M+52,y+1.3,W-M,y+1.3);y+=8;
   });
   y+=4;
 
-  /* ── TABLEAU TÂCHES ──
-     Colonnes : Description (85) | Fait ? (31) | Nvlle inter ? (35) | Commander ? (27)
-     Total = 178 = W - 2*M
-  */
-  const colW=[85,31,35,27];
-  const colT=['Description de la tâche','Fait ?','Nvlle\ninter ?','Commander ?'];
-  const HDR_H=14; // hauteur en-tête (assez pour 2 lignes)
-
-  let cx=M;
-  pdf.setFillColor(...TEAL);
-  colW.forEach((w,i)=>{
-    pdf.rect(cx,y,w,HDR_H,'F');
-    pdf.setTextColor(255);
-    pdf.setFont('helvetica','bold');
-    const fs=i===0?8.5:7.5;
-    pdf.setFontSize(fs);
-    const lines=colT[i].split('\n');
-    const lineH=fs*0.4;
-    const totalH=lines.length*lineH;
-    const startY=y+(HDR_H-totalH)/2+lineH;
-    lines.forEach((ln,li)=>{
-      pdf.text(ln, cx+w/2, startY+li*lineH, {align:'center'});
-    });
-    cx+=w;
-  });
-  y+=HDR_H;
-
-  /* Lignes de tâches */
-  pdf.setTextColor(...INK); pdf.setFont('helvetica','normal');
+  // ── TÂCHES : chaque tâche = bloc description + bande statuts ──
+  let taskNum=0;
   document.querySelectorAll('.task').forEach(t=>{
     const desc=t.querySelector('textarea').value.trim();
-    if(!desc) return;
+    if(!desc)return;
+    taskNum++;
     const fait=t.dataset.fait||'';
     const inter=t.dataset.inter||'';
     const cmd=t.dataset.cmd||'';
-    const lines=pdf.splitTextToSize(desc,81);
-    const h=Math.max(10,lines.length*4.5+4);
-    if(y+h>232){ pdf.addPage(); y=20; }
-    cx=M;
-    pdf.setDrawColor(180,195,205);
 
-    // Description
-    pdf.rect(cx,y,colW[0],h);
-    pdf.setFontSize(9.5); pdf.setFont('helvetica','normal'); pdf.setTextColor(...INK);
-    pdf.text(lines,cx+2,y+5);
-    cx+=colW[0];
+    const descLines=pdf.splitTextToSize(desc,W-2*M-12);
+    const descH=Math.max(9,descLines.length*4.5+5);
+    const statH=11;
+    const totalH=descH+statH;
+    if(y+totalH>232){pdf.addPage();y=20;}
 
-    // Fait
-    pdf.rect(cx,y,colW[1],h);
-    if(fait){
-      const c=fait==='OUI'?[30,142,90]:[192,57,43];
-      pdf.setTextColor(...c); pdf.setFont('helvetica','bold'); pdf.setFontSize(9);
-      pdf.text(fait,cx+colW[1]/2,y+h/2+1.5,{align:'center'});
-    }
-    cx+=colW[1];
+    // Bande description (fond clair)
+    pdf.setFillColor(234,242,246);pdf.rect(M,y,W-2*M,descH,'F');
+    pdf.setDrawColor(180,195,205);pdf.setLineWidth(0.3);pdf.rect(M,y,W-2*M,descH);
+    // Badge numéro
+    pdf.setFillColor(...TEAL);pdf.rect(M,y,9,descH,'F');
+    pdf.setTextColor(255);pdf.setFont('helvetica','bold');pdf.setFontSize(8);
+    pdf.text(String(taskNum),M+4.5,y+descH/2+1.5,{align:'center'});
+    // Texte description
+    pdf.setTextColor(...INK);pdf.setFont('helvetica','normal');pdf.setFontSize(9.5);
+    pdf.text(descLines,M+12,y+5);
+    y+=descH;
 
-    // Nvlle inter — OUI = DANGER (alerte), NON = ok
-    pdf.rect(cx,y,colW[2],h);
-    if(inter){
-      const c=inter==='OUI'?[192,57,43]:[30,142,90];
-      pdf.setTextColor(...c); pdf.setFont('helvetica','bold'); pdf.setFontSize(9);
-      pdf.text(inter,cx+colW[2]/2,y+h/2+1.5,{align:'center'});
-    }
-    cx+=colW[2];
-
-    // Commander — OUI = DANGER (alerte), NON = ok
-    pdf.rect(cx,y,colW[3],h);
-    if(cmd){
-      const c=cmd==='OUI'?[192,57,43]:[30,142,90];
-      pdf.setTextColor(...c); pdf.setFont('helvetica','bold'); pdf.setFontSize(9);
-      pdf.text(cmd,cx+colW[3]/2,y+h/2+1.5,{align:'center'});
-    }
-    pdf.setTextColor(...INK); pdf.setFont('helvetica','normal');
-    y+=h;
+    // Bande statuts (3 cellules égales) — label + valeur dans chaque cellule
+    const sw=(W-2*M)/3;
+    const statuts=[
+      {label:'Fait ?',val:fait,alertOui:false},
+      {label:'Nouvelle inter. à prévoir ?',val:inter,alertOui:true},
+      {label:'Commander des éléments ?',val:cmd,alertOui:true},
+    ];
+    statuts.forEach((s,i)=>{
+      const sx=M+i*sw;
+      pdf.setFillColor(248,250,252);pdf.rect(sx,y,sw,statH,'F');
+      pdf.setDrawColor(180,195,205);pdf.rect(sx,y,sw,statH);
+      // Label
+      pdf.setFont('helvetica','normal');pdf.setFontSize(6.5);pdf.setTextColor(...GRAY);
+      pdf.text(s.label,sx+3,y+4);
+      // Valeur
+      if(s.val){
+        const isAlert=(s.alertOui&&s.val==='OUI')||(!s.alertOui&&s.val==='NON');
+        const col=isAlert?[192,57,43]:[30,142,90];
+        pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(...col);
+        pdf.text(s.val,sx+sw-3,y+9,{align:'right'});
+      }
+    });
+    y+=statH+3;
   });
-  y+=8;
+  y+=4;
 
-  /* Attestation */
-  if(y>210){ pdf.addPage(); y=20; }
-  pdf.setFontSize(9.5); pdf.setFont('helvetica','normal'); pdf.setTextColor(...INK);
-  pdf.setFillColor(234,242,246); pdf.rect(M,y-2,W-2*M,16,'F');
-  pdf.setDrawColor(...TEAL); pdf.setLineWidth(0.8); pdf.rect(M,y-2,3,16,'F');
+  // Attestation
+  if(y>210){pdf.addPage();y=20;}
+  pdf.setFillColor(234,242,246);pdf.rect(M,y-2,W-2*M,16,'F');
+  pdf.setFillColor(...TEAL);pdf.rect(M,y-2,3,16,'F');
+  pdf.setFont('helvetica','normal');pdf.setFontSize(9.5);pdf.setTextColor(...INK);
   const att=`Monsieur, Madame ${occupant||'—'} constate(nt) que l'entreprise KYRIEL CONSTRUCTION a bien effectué les travaux de reprise mentionnés ci-dessus, ce qui constitue la levée des réserves.`;
-  const attL=pdf.splitTextToSize(att,W-2*M-8);
-  pdf.text(attL,M+5,y+3.5);
+  pdf.text(pdf.splitTextToSize(att,W-2*M-8),M+5,y+3.5);
   y+=20;
 
-  /* Commentaires */
-  const comments=document.getElementById('comments').value.trim();
-  const commentsClient=document.getElementById('commentsClient').value.trim();
-  [[comments,'COMMENTAIRE KYRIEL'],[commentsClient,'COMMENTAIRE DU CLIENT']].forEach(([txt,titre])=>{
-    if(!txt) return;
-    if(y>215){ pdf.addPage(); y=20; }
-    pdf.setFont('helvetica','bold'); pdf.setFontSize(10); pdf.setTextColor(...TEAL);
-    pdf.text(titre,M,y); y+=5;
-    pdf.setTextColor(...INK); pdf.setFont('helvetica','normal'); pdf.setFontSize(9.5);
-    const comL=pdf.splitTextToSize(txt,W-2*M);
-    pdf.text(comL,M,y); y+=comL.length*4.5+6;
+  // Commentaires
+  [[ document.getElementById('comments').value.trim(),'COMMENTAIRE KYRIEL'],[document.getElementById('commentsClient').value.trim(),'COMMENTAIRE DU CLIENT']].forEach(([txt,titre])=>{
+    if(!txt)return;
+    if(y>215){pdf.addPage();y=20;}
+    pdf.setFont('helvetica','bold');pdf.setFontSize(10);pdf.setTextColor(...TEAL);pdf.text(titre,M,y);y+=5;
+    pdf.setTextColor(...INK);pdf.setFont('helvetica','normal');pdf.setFontSize(9.5);
+    const cl=pdf.splitTextToSize(txt,W-2*M);pdf.text(cl,M,y);y+=cl.length*4.5+6;
   });
 
-  /* Signatures */
-  if(y>205){ pdf.addPage(); y=20; }
-  const sw=(W-2*M-6)/2, sh=38;
-  pdf.setFontSize(8.5); pdf.setDrawColor(...TEAL); pdf.setLineWidth(0.4);
-  pdf.rect(M,y,sw,sh);
-  pdf.setTextColor(...GRAY); pdf.setFont('helvetica','bold');
-  pdf.text('Signature du représentant de',M+2,y+5);
-  pdf.text('KYRIEL CONSTRUCTION',M+2,y+9);
-  pdf.rect(M+sw+6,y,sw,sh);
-  pdf.text('Signature du client — « Bon pour',M+sw+8,y+5);
-  pdf.text('travaux exécutés » le '+new Date().toLocaleDateString('fr-FR'),M+sw+8,y+9);
+  // Signatures
+  if(y>205){pdf.addPage();y=20;}
+  const sw2=(W-2*M-6)/2,sh=38;
+  pdf.setFontSize(8.5);pdf.setDrawColor(...TEAL);pdf.setLineWidth(0.4);
+  pdf.rect(M,y,sw2,sh);pdf.setTextColor(...GRAY);pdf.setFont('helvetica','bold');
+  pdf.text('Signature du représentant de',M+2,y+5);pdf.text('KYRIEL CONSTRUCTION',M+2,y+9);
+  pdf.rect(M+sw2+6,y,sw2,sh);
+  pdf.text('Signature du client — « Bon pour',M+sw2+8,y+5);
+  pdf.text('travaux exécutés » le '+new Date().toLocaleDateString('fr-FR'),M+sw2+8,y+9);
   const sigK=document.getElementById('sigK');
-  if(sigK.dataset.signed) pdf.addImage(sigK.toDataURL('image/png'),'PNG',M+4,y+11,sw-8,sh-15);
-  pdf.addImage(sigC.toDataURL('image/png'),'PNG',M+sw+10,y+11,sw-8,sh-15);
+  if(sigK.dataset.signed)pdf.addImage(sigK.toDataURL('image/png'),'PNG',M+4,y+11,sw2-8,sh-15);
+  pdf.addImage(sigC.toDataURL('image/png'),'PNG',M+sw2+10,y+11,sw2-8,sh-15);
   y+=sh+8;
 
-  /* Photos en annexe */
-  if(photos.length){
-    photos.forEach((p,i)=>{
-      if(i%2===0){
-        pdf.addPage();
-        pdf.setFillColor(...DARK); pdf.rect(0,0,W,16,'F');
-        pdf.setFillColor(...TEAL); pdf.rect(0,16,W,2,'F');
-        pdf.setTextColor(255); pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
-        pdf.text('ANNEXE PHOTOS — '+residence,M,11); pdf.setTextColor(...INK);
-      }
-      const slotY=(i%2===0)?24:155;
-      const maxW=W-2*M, maxH=122;
-      const r=Math.min(maxW/p.w,maxH/p.h);
-      pdf.addImage(p.data,'JPEG',M+(maxW-p.w*r)/2,slotY,p.w*r,p.h*r);
-      pdf.setFontSize(8); pdf.setTextColor(...GRAY);
-      pdf.text('Photo '+(i+1),M,slotY+p.h*r+5); pdf.setTextColor(...INK);
-    });
-  }
+  // Photos
+  if(photos.length){photos.forEach((p,i)=>{
+    if(i%2===0){pdf.addPage();pdf.setFillColor(...DARK);pdf.rect(0,0,W,16,'F');pdf.setFillColor(...TEAL);pdf.rect(0,16,W,2,'F');pdf.setTextColor(255);pdf.setFont('helvetica','bold');pdf.setFontSize(10);pdf.text('ANNEXE PHOTOS — '+residence,M,11);pdf.setTextColor(...INK);}
+    const slotY=(i%2===0)?24:155,maxW=W-2*M,maxH=122,r=Math.min(maxW/p.w,maxH/p.h);
+    pdf.addImage(p.data,'JPEG',M+(maxW-p.w*r)/2,slotY,p.w*r,p.h*r);
+    pdf.setFontSize(8);pdf.setTextColor(...GRAY);pdf.text('Photo '+(i+1),M,slotY+p.h*r+5);pdf.setTextColor(...INK);
+  });}
 
-  /* Pied de page sur chaque page */
-  const nbPages=pdf.getNumberOfPages();
-  for(let p=1;p<=nbPages;p++){
-    pdf.setPage(p);
-    pdf.setDrawColor(...TEAL); pdf.setLineWidth(0.3); pdf.line(0,288,W,288);
-    pdf.setTextColor(...GRAY); pdf.setFontSize(7.5); pdf.setFont('helvetica','normal');
-    pdf.text('Groupe Kyriel — groupe-kyriel.fr',W/2,293,{align:'center'});
-    pdf.text('Page '+p+'/'+nbPages,W-M,293,{align:'right'});
-  }
+  // Pied de page
+  const nb=pdf.getNumberOfPages();
+  for(let p=1;p<=nb;p++){pdf.setPage(p);pdf.setDrawColor(...TEAL);pdf.setLineWidth(0.3);pdf.line(0,288,W,288);pdf.setTextColor(...GRAY);pdf.setFontSize(7.5);pdf.setFont('helvetica','normal');pdf.text('Groupe Kyriel — groupe-kyriel.fr',W/2,293,{align:'center'});pdf.text('Page '+p+'/'+nb,W-M,293,{align:'right'});}
 
-  /* Nom de fichier & export */
+  // Export
   const dt=new Date();
   const stamp=dt.getFullYear().toString().slice(2)+String(dt.getMonth()+1).padStart(2,'0')+String(dt.getDate()).padStart(2,'0');
-  const resClean=residence.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase();
-  const fname=`${resClean}_QUITUS_${typeSel.replace(' ','')}_${stamp}.pdf`;
-
+  const fname=residence.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase()+'_QUITUS_'+typeSel.replace(' ','')+'_'+stamp+'.pdf';
   const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const blob=pdf.output('blob');
   const file=new File([blob],fname,{type:'application/pdf'});
-  if(isMobile && navigator.canShare && navigator.canShare({files:[file]})){
-    navigator.share({files:[file],title:fname}).catch(()=>{});
-  } else {
-    try{
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a'); a.href=url; a.download=fname;
-      document.body.appendChild(a); a.click();
-      setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },4000);
-    }catch(e){ window.open(pdf.output('bloburl'),'_blank'); }
-  }
-
+  if(isMobile&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:fname}).catch(()=>{});}
+  else{try{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},4000);}catch(e){window.open(pdf.output('bloburl'),'_blank');}}
   const toast=document.getElementById('toast');
   toast.textContent=isMobile?'PDF prêt à partager ✔':'PDF téléchargé ✔';
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2600);
+  toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);
 }
 </script>
 </body>
