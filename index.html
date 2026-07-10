@@ -525,12 +525,19 @@ function genPDF(){
   const resClean = residence.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase();
   const fname = `${resClean}_QUITUS_${typeSel.replace(' ','')}_${stamp}.pdf`;
 
-  /* Partage natif mobile, sinon téléchargement blob */
+  /* ── PARTAGE / TÉLÉCHARGEMENT ──────────────────────────────────────────────
+     - Mobile (iOS/Android) : menu de partage natif avec PDF en pièce jointe
+     - PC (Windows/Mac)     : téléchargement direct dans le dossier Téléchargements
+  ─────────────────────────────────────────────────────────────────────────── */
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const blob = pdf.output('blob');
   const file = new File([blob], fname, {type:'application/pdf'});
-  if(navigator.canShare && navigator.canShare({files:[file]})){
+
+  if(isMobile && navigator.canShare && navigator.canShare({files:[file]})){
+    // Mobile : partage natif (Teams, Outlook, OneDrive, WhatsApp…)
     navigator.share({files:[file], title:fname}).catch(()=>{});
-  }else{
+  } else {
+    // PC : téléchargement direct
     try{
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -544,6 +551,7 @@ function genPDF(){
   }
 
   const toast = document.getElementById('toast');
+  toast.textContent = isMobile ? 'PDF prêt à partager ✔' : 'PDF téléchargé ✔';
   toast.classList.add('show');
   setTimeout(()=>toast.classList.remove('show'), 2600);
 }
