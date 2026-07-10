@@ -3,67 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Quitus de levée — Kyriel Construction</title>
+<title>Quitus de levée — Kyriel</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
-    --kyriel:#2C5F75;--kyriel-dark:#1A3A4A;--kyriel-lt:#EAF2F6;
-    --ink:#1a2430;--muted:#5b6b7c;--line:#c9d4de;--bg:#eef2f6;--card:#fff;
-    --ok:#1e8e5a;--danger:#c0392b;
+    --kyriel:#2E75B6;
+    --kyriel-dark:#1F5388;
+    --ink:#1a2430;
+    --muted:#5b6b7c;
+    --line:#c9d4de;
+    --bg:#eef2f6;
+    --card:#ffffff;
+    --ok:#1e8e5a;
+    --danger:#c0392b;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);padding:12px;padding-bottom:90px;}
-  .sheet{max-width:820px;margin:0 auto;background:var(--card);border-radius:10px;box-shadow:0 2px 12px rgba(20,40,70,.10);overflow:hidden;}
-  header{background:var(--kyriel-dark);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    padding:12px;
+    padding-bottom:90px;
+  }
+  .sheet{
+    max-width:820px;margin:0 auto;background:var(--card);
+    border-radius:10px;box-shadow:0 2px 12px rgba(20,40,70,.10);
+    overflow:hidden;
+  }
+  header{
+    background:var(--kyriel);color:#fff;
+    padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
   header .brand{font-size:20px;font-weight:700;letter-spacing:.06em}
   header .brand small{display:block;font-size:10px;font-weight:400;letter-spacing:.18em;opacity:.85}
   header .doc{font-size:15px;font-weight:600;text-align:right}
   main{padding:18px 20px}
-  h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--kyriel-dark);margin:22px 0 10px;border-bottom:2px solid var(--kyriel);padding-bottom:5px;}
+  h2{
+    font-size:13px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--kyriel-dark);margin:22px 0 10px;
+    border-bottom:2px solid var(--kyriel);padding-bottom:5px;
+  }
   h2:first-child{margin-top:0}
   .types{display:flex;gap:10px;flex-wrap:wrap}
-  .type-btn{flex:1;min-width:110px;padding:14px 10px;border:2px solid var(--line);border-radius:8px;background:#fff;font-size:15px;font-weight:600;color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;}
+  .type-btn{
+    flex:1;min-width:110px;padding:14px 10px;border:2px solid var(--line);
+    border-radius:8px;background:#fff;font-size:15px;font-weight:600;color:var(--muted);
+    text-align:center;cursor:pointer;transition:all .15s;
+  }
   .type-btn.active{border-color:var(--kyriel);background:var(--kyriel);color:#fff}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .grid .full{grid-column:1/-1}
+  .grid .full{grid-column:1 / -1}
   @media(max-width:560px){.grid{grid-template-columns:1fr}}
   label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
-  input[type=text],input[type=datetime-local],textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink);}
+  input[type=text],input[type=tel],input[type=datetime-local],textarea{
+    width:100%;padding:12px;border:1.5px solid var(--line);border-radius:8px;
+    font-size:16px;font-family:inherit;background:#fff;color:var(--ink);
+  }
   input:focus,textarea:focus{outline:none;border-color:var(--kyriel)}
-  .task{border:1.5px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;}
-  .task textarea{min-height:52px;resize:vertical;margin-bottom:10px;}
-  .task-status{display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap;}
-  .fait{display:flex;flex-direction:column;gap:4px;flex:1;min-width:90px;}
-  .fait span{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
-  .fbtns{display:flex;gap:5px;}
-  .fbtn{padding:8px 12px;border:2px solid var(--line);border-radius:8px;background:#fff;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;}
+  /* Tâches */
+  .task{
+    border:1.5px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;
+    display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:start;
+  }
+  .task textarea{min-height:52px;resize:vertical}
+  .fait{display:flex;flex-direction:column;gap:4px}
+  .fait span{font-size:11px;font-weight:600;color:var(--muted);text-align:center}
+  .fait .fbtns{display:flex;gap:6px}
+  .fbtn{
+    padding:10px 14px;border:2px solid var(--line);border-radius:8px;background:#fff;
+    font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;
+  }
   .fbtn.oui.active{border-color:var(--ok);background:var(--ok);color:#fff}
   .fbtn.non.active{border-color:var(--danger);background:var(--danger);color:#fff}
-  .del{border:none;background:none;color:var(--danger);font-size:22px;cursor:pointer;padding:4px;line-height:1;align-self:flex-start;margin-left:auto;}
-  .addtask{width:100%;padding:12px;border:2px dashed var(--kyriel);border-radius:8px;background:var(--kyriel-lt);color:var(--kyriel);font-size:15px;font-weight:600;cursor:pointer;}
-  .attest{background:var(--kyriel-lt);border-left:4px solid var(--kyriel);padding:12px 14px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.5;margin-top:8px;}
+  .del{
+    border:none;background:none;color:var(--danger);font-size:22px;cursor:pointer;
+    padding:6px;line-height:1;align-self:center;
+  }
+  .addtask{
+    width:100%;padding:12px;border:2px dashed var(--kyriel);border-radius:8px;
+    background:#f4f9ff;color:var(--kyriel);font-size:15px;font-weight:600;cursor:pointer;
+  }
+  .attest{
+    background:#f4f8fc;border-left:4px solid var(--kyriel);
+    padding:12px 14px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.5;margin-top:8px;
+  }
+  /* Signatures */
   .sigs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:640px){.sigs{grid-template-columns:1fr}}
   .sigbox{border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
-  .sigbox .sighead{background:#f0f4f8;padding:9px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center;}
+  .sigbox .sighead{
+    background:#f0f4f8;padding:9px 12px;font-size:12px;font-weight:600;color:var(--ink);
+    display:flex;justify-content:space-between;align-items:center;
+  }
   .sigbox .clear{border:none;background:none;color:var(--kyriel);font-size:12px;font-weight:600;cursor:pointer}
   canvas.sig{width:100%;height:150px;display:block;touch-action:none;background:#fff}
   .mention{font-size:11px;color:var(--muted);padding:0 12px 8px}
-  .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -3px 14px rgba(20,40,70,.15);padding:12px 16px;display:flex;gap:10px;justify-content:center;z-index:50;}
-  .btn{padding:14px 22px;border:none;border-radius:9px;font-size:16px;font-weight:700;cursor:pointer;}
+  /* Bottom bar */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;background:#fff;
+    box-shadow:0 -3px 14px rgba(20,40,70,.15);padding:12px 16px;
+    display:flex;gap:10px;justify-content:center;z-index:50;
+  }
+  .btn{
+    padding:14px 22px;border:none;border-radius:9px;font-size:16px;font-weight:700;cursor:pointer;
+  }
   .btn-pdf{background:var(--kyriel);color:#fff;flex:1;max-width:420px}
   .btn-pdf:active{background:var(--kyriel-dark)}
   .btn-reset{background:#fff;border:2px solid var(--line);color:var(--muted)}
-  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;}
+  .toast{
+    position:fixed;top:14px;left:50%;transform:translateX(-50%);
+    background:var(--ok);color:#fff;padding:12px 22px;border-radius:9px;
+    font-weight:600;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.2);
+    opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;
+  }
   .toast.show{opacity:1}
+  footer.legal{
+    padding:14px 20px 20px;font-size:9.5px;color:var(--muted);line-height:1.5;
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid var(--line);margin-top:8px;
+  }
+  @media(max-width:560px){footer.legal{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
 <div class="sheet">
   <header>
     <div class="brand">GROUPE KYRIEL<small>EXPERTS EN MENUISERIE</small></div>
     <div class="doc">QUITUS<br>DE LEVÉE</div>
   </header>
+
   <main>
     <h2>Type d'intervention</h2>
     <div class="types" id="types">
@@ -71,20 +139,41 @@
       <div class="type-btn" data-v="GPA">GPA</div>
       <div class="type-btn" data-v="SAV Payant">SAV Payant</div>
     </div>
+
     <h2>Informations</h2>
     <div class="grid">
-      <div class="full"><label>Résidence / Adresse</label><input type="text" id="residence" placeholder="Nom de la résidence, adresse"></div>
-      <div><label>Logement</label><input type="text" id="logement" placeholder="N° logement"></div>
-      <div><label>Date / Heure RDV</label><input type="datetime-local" id="rdv"></div>
-      <div class="full"><label>Nom de l'occupant</label><input type="text" id="occupant" placeholder="Nom Prénom"></div>
+      <div class="full">
+        <label>Résidence / Adresse</label>
+        <input type="text" id="residence" placeholder="Nom de la résidence, adresse">
+      </div>
+      <div>
+        <label>Logement</label>
+        <input type="text" id="logement" placeholder="N° logement">
+      </div>
+      <div>
+        <label>Date / Heure RDV</label>
+        <input type="datetime-local" id="rdv">
+      </div>
+      <div>
+        <label>Nom de l'occupant</label>
+        <input type="text" id="occupant" placeholder="Nom Prénom">
+      </div>
+      <div>
+        <label>Téléphone</label>
+        <input type="tel" id="tel" placeholder="06 __ __ __ __">
+      </div>
     </div>
+
     <h2>Tâches réalisées</h2>
     <div id="tasks"></div>
     <button class="addtask" onclick="addTask()">+ Ajouter une tâche</button>
-    <div class="attest" style="margin-top:14px">
+
+    <div class="attest" id="attest">
       Monsieur, Madame <strong><span id="attestName">…</span></strong> constate(nt) que l'entreprise
-      <strong>KYRIEL CONSTRUCTION</strong> a bien effectué les travaux de reprise mentionnés ci-dessus, ce qui constitue la levée des réserves.
+      <strong>KYRIEL</strong> a bien effectué les travaux de reprise mentionnés
+      ci-dessus, ce qui constitue la levée des réserves.
     </div>
+
     <h2>Photos</h2>
     <input type="file" id="photoCam" accept="image/*" capture="environment" style="display:none">
     <input type="file" id="photoGal" accept="image/*" multiple style="display:none">
@@ -93,234 +182,370 @@
       <button class="addtask" style="flex:1" onclick="document.getElementById('photoGal').click()">🖼️ Galerie</button>
     </div>
     <div id="photoGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px"></div>
+
     <h2>Commentaires &amp; Signatures</h2>
     <div class="sigs" style="margin-bottom:14px">
-      <div><label>Commentaire Kyriel (technicien)</label><textarea id="comments" rows="3" placeholder="Observations du technicien…"></textarea></div>
-      <div><label>Commentaire du client</label><textarea id="commentsClient" rows="3" placeholder="Remarques du client…"></textarea></div>
+      <div>
+        <label>Commentaire Kyriel (technicien)</label>
+        <textarea id="comments" rows="3" placeholder="Observations du technicien…"></textarea>
+      </div>
+      <div>
+        <label>Commentaire du client</label>
+        <textarea id="commentsClient" rows="3" placeholder="Remarques du client…"></textarea>
+      </div>
     </div>
     <div class="sigs">
       <div class="sigbox">
-        <div class="sighead">Représentant KYRIEL CONSTRUCTION<button class="clear" onclick="clearSig('sigK')">Effacer</button></div>
+        <div class="sighead">Représentant KYRIEL
+          <button class="clear" onclick="clearSig('sigK')">Effacer</button>
+        </div>
         <canvas class="sig" id="sigK"></canvas>
       </div>
       <div class="sigbox">
-        <div class="sighead">Client — « Bon pour travaux exécutés »<button class="clear" onclick="clearSig('sigC')">Effacer</button></div>
+        <div class="sighead">Client — « Bon pour travaux exécutés »
+          <button class="clear" onclick="clearSig('sigC')">Effacer</button>
+        </div>
         <canvas class="sig" id="sigC"></canvas>
         <div class="mention">La signature vaut mention « Bon pour travaux exécutés » datée de ce jour.</div>
       </div>
     </div>
+
+    <footer class="legal">
+      <div>
+        <strong>KYRIEL CONSTRUCTION À RENNES</strong><br>
+        Enseigne de l'ENTREPRISE MARTIN<br>
+        4 boulevard du Scorff 35740 PACÉ — 02 99 66 79 76 [CHOIX N°5]<br>
+        construction.rennes@groupe-kyriel.fr<br>
+        SAS ENTREPRISE MARTIN au capital de 51 560 € — SIREN : 487 899 494 / APE : 4332A — TVA : FR19487899494
+      </div>
+      <div>
+        <strong>KYRIEL CONSTRUCTION À NANTES</strong><br>
+        Enseigne de M ATLANTIQUE<br>
+        6 rue Carré Norgands 44880 SAUTRON — 02 99 66 79 76 [CHOIX N°6]<br>
+        construction.nantes@groupe-kyriel.fr<br>
+        SAS M ATLANTIQUE au capital de 10 000 € — SIREN : 833 922 958 / APE : 4332A — TVA : FR79833922958
+      </div>
+    </footer>
   </main>
 </div>
+
 <div class="bar">
   <button class="btn btn-reset" onclick="resetAll()">Nouveau</button>
   <button class="btn btn-pdf" onclick="genPDF()">📄 Générer le PDF signé</button>
 </div>
-<div class="toast" id="toast"></div>
+
+<div class="toast" id="toast">PDF généré ✔</div>
+
 <script>
-let typeSel="";
+/* ---------- Type ---------- */
+let typeSel = "";
 document.querySelectorAll('#types .type-btn').forEach(b=>{
-  b.addEventListener('click',()=>{document.querySelectorAll('#types .type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');typeSel=b.dataset.v;});
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#types .type-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); typeSel = b.dataset.v;
+  });
 });
-let taskId=0;
+
+/* ---------- Tâches ---------- */
+let taskId = 0;
 function addTask(txt=""){
   taskId++;
-  const d=document.createElement('div');d.className='task';d.id='task'+taskId;
-  d.innerHTML=`<textarea placeholder="Description de la tâche réalisée…">${txt}</textarea>
-    <div class="task-status">
-      <div class="fait"><span>Fait ?</span><div class="fbtns">
-        <button class="fbtn oui" onclick="setVal(this,'fait','OUI')">OUI</button>
-        <button class="fbtn non" onclick="setVal(this,'fait','NON')">NON</button>
-      </div></div>
-      <div class="fait"><span>Nvlle inter ?</span><div class="fbtns">
-        <button class="fbtn oui" onclick="setVal(this,'inter','OUI')">OUI</button>
-        <button class="fbtn non" onclick="setVal(this,'inter','NON')">NON</button>
-      </div></div>
-      <div class="fait"><span>Commander ?</span><div class="fbtns">
-        <button class="fbtn oui" onclick="setVal(this,'cmd','OUI')">OUI</button>
-        <button class="fbtn non" onclick="setVal(this,'cmd','NON')">NON</button>
-      </div></div>
-      <button class="del" onclick="this.closest('.task').remove()">✕</button>
-    </div>`;
+  const d = document.createElement('div');
+  d.className = 'task'; d.id = 'task'+taskId;
+  d.innerHTML = `
+    <textarea placeholder="Description de la tâche">${txt}</textarea>
+    <div class="fait"><span>Fait</span>
+      <div class="fbtns">
+        <button class="fbtn oui" onclick="setFait(this,'OUI')">OUI</button>
+        <button class="fbtn non" onclick="setFait(this,'NON')">NON</button>
+      </div>
+    </div>
+    <button class="del" onclick="this.parentElement.remove()">✕</button>`;
   document.getElementById('tasks').appendChild(d);
 }
-function setVal(btn,field,v){btn.parentElement.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');btn.closest('.task').dataset[field]=v;}
-addTask();
-document.getElementById('occupant').addEventListener('input',e=>{document.getElementById('attestName').textContent=e.target.value||'…';});
-function setupSig(id){
-  const c=document.getElementById(id),ctx=c.getContext('2d');
-  function resize(){const data=c.toDataURL(),r=c.getBoundingClientRect();c.width=r.width*2;c.height=r.height*2;ctx.scale(2,2);ctx.lineWidth=2.2;ctx.lineCap='round';ctx.strokeStyle='#16233a';const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,r.width,r.height);img.src=data;}
-  resize();window.addEventListener('resize',resize);
-  let draw=false,last=null;
-  function pos(e){const r=c.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};}
-  function start(e){e.preventDefault();draw=true;last=pos(e);c.dataset.signed="1";}
-  function move(e){if(!draw)return;e.preventDefault();const p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;}
-  function end(){draw=false;}
-  c.addEventListener('mousedown',start);c.addEventListener('mousemove',move);window.addEventListener('mouseup',end);
-  c.addEventListener('touchstart',start,{passive:false});c.addEventListener('touchmove',move,{passive:false});c.addEventListener('touchend',end);
+function setFait(btn,v){
+  const p = btn.parentElement;
+  p.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  btn.closest('.task').dataset.fait = v;
 }
-function clearSig(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed="";}
-setupSig('sigK');setupSig('sigC');
-let photos=[];
-function handleFiles(files){[...files].forEach(f=>{const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const max=1400;let w=img.width,h=img.height;if(w>max||h>max){const r=Math.min(max/w,max/h);w=Math.round(w*r);h=Math.round(h*r);}const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);photos.push({data:cv.toDataURL('image/jpeg',0.72),w,h});renderPhotos();};img.src=ev.target.result;};reader.readAsDataURL(f);});}
-document.getElementById('photoCam').addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
-document.getElementById('photoGal').addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
-function renderPhotos(){const g=document.getElementById('photoGrid');g.innerHTML='';photos.forEach((p,i)=>{const d=document.createElement('div');d.style.cssText='position:relative;border:1.5px solid var(--line);border-radius:8px;overflow:hidden';d.innerHTML=`<img src="${p.data}" style="width:100%;height:90px;object-fit:cover;display:block"><button onclick="delPhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(192,57,43,.92);color:#fff;border:none;border-radius:6px;width:26px;height:26px;font-size:15px;cursor:pointer">✕</button>`;g.appendChild(d);});}
-function delPhoto(i){photos.splice(i,1);renderPhotos();}
-function resetAll(){if(!confirm('Effacer tout le formulaire ?'))return;document.querySelectorAll('input,textarea').forEach(e=>e.value='');document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));typeSel='';document.getElementById('tasks').innerHTML='';addTask();clearSig('sigK');clearSig('sigC');photos=[];renderPhotos();document.getElementById('attestName').textContent='…';window.scrollTo(0,0);}
+addTask();
 
+/* ---------- Nom occupant → attestation ---------- */
+document.getElementById('occupant').addEventListener('input',e=>{
+  document.getElementById('attestName').textContent = e.target.value || '…';
+});
+
+/* ---------- Signatures tactiles ---------- */
+function setupSig(id){
+  const c = document.getElementById(id);
+  const ctx = c.getContext('2d');
+  function resize(){
+    const data = c.toDataURL();
+    const r = c.getBoundingClientRect();
+    c.width = r.width * 2; c.height = r.height * 2;
+    ctx.scale(2,2); ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.strokeStyle = '#16233a';
+    const img = new Image(); img.onload = ()=>ctx.drawImage(img,0,0,r.width,r.height); img.src = data;
+  }
+  resize(); window.addEventListener('resize',resize);
+  let draw = false, last = null;
+  function pos(e){
+    const r = c.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return {x:t.clientX - r.left, y:t.clientY - r.top};
+  }
+  function start(e){ e.preventDefault(); draw = true; last = pos(e); c.dataset.signed = "1"; }
+  function move(e){
+    if(!draw) return; e.preventDefault();
+    const p = pos(e);
+    ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke();
+    last = p;
+  }
+  function end(){ draw = false; }
+  c.addEventListener('mousedown',start); c.addEventListener('mousemove',move);
+  window.addEventListener('mouseup',end);
+  c.addEventListener('touchstart',start,{passive:false});
+  c.addEventListener('touchmove',move,{passive:false});
+  c.addEventListener('touchend',end);
+}
+function clearSig(id){
+  const c = document.getElementById(id);
+  c.getContext('2d').clearRect(0,0,c.width,c.height);
+  c.dataset.signed = "";
+}
+setupSig('sigK'); setupSig('sigC');
+
+/* ---------- Photos ---------- */
+let photos = []; // {data, w, h}
+function handleFiles(files){
+  [...files].forEach(f=>{
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      const img = new Image();
+      img.onload = ()=>{
+        // Compression : max 1400px, JPEG 0.72
+        const max = 1400;
+        let w = img.width, h = img.height;
+        if(w > max || h > max){ const r = Math.min(max/w, max/h); w = Math.round(w*r); h = Math.round(h*r); }
+        const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        photos.push({data: cv.toDataURL('image/jpeg',0.72), w, h});
+        renderPhotos();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  });
+}
+document.getElementById('photoCam').addEventListener('change', e=>{ handleFiles(e.target.files); e.target.value=''; });
+document.getElementById('photoGal').addEventListener('change', e=>{ handleFiles(e.target.files); e.target.value=''; });
+function renderPhotos(){
+  const g = document.getElementById('photoGrid');
+  g.innerHTML = '';
+  photos.forEach((p,i)=>{
+    const d = document.createElement('div');
+    d.style.cssText = 'position:relative;border:1.5px solid var(--line);border-radius:8px;overflow:hidden';
+    d.innerHTML = `<img src="${p.data}" style="width:100%;height:90px;object-fit:cover;display:block">
+      <button onclick="delPhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(192,57,43,.92);color:#fff;border:none;border-radius:6px;width:26px;height:26px;font-size:15px;cursor:pointer">✕</button>`;
+    g.appendChild(d);
+  });
+}
+function delPhoto(i){ photos.splice(i,1); renderPhotos(); }
+
+/* ---------- Reset ---------- */
+function resetAll(){
+  if(!confirm('Effacer tout le formulaire ?')) return;
+  document.querySelectorAll('input,textarea').forEach(e=>e.value='');
+  document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active')); typeSel='';
+  document.getElementById('tasks').innerHTML=''; addTask();
+  clearSig('sigK'); clearSig('sigC');
+  photos = []; renderPhotos();
+  document.getElementById('attestName').textContent='…';
+  window.scrollTo(0,0);
+}
+
+/* ---------- PDF ---------- */
 function genPDF(){
-  const residence=document.getElementById('residence').value.trim();
-  const occupant=document.getElementById('occupant').value.trim();
-  const sigC=document.getElementById('sigC');
-  if(!typeSel){alert('Sélectionnez le type.');return;}
-  if(!residence){alert('Renseignez la résidence.');return;}
-  if(!sigC.dataset.signed){alert('Signature du client requise.');return;}
-  const {jsPDF}=window.jspdf;
-  const pdf=new jsPDF('p','mm','a4');
-  const W=210,M=16;
-  let y=18;
-  const TEAL=[44,95,117],DARK=[26,58,74],INK=[26,36,48],GRAY=[91,107,124];
+  const residence = document.getElementById('residence').value.trim();
+  const occupant  = document.getElementById('occupant').value.trim();
+  const sigC = document.getElementById('sigC');
+  if(!typeSel){ alert('Sélectionnez le type : Réserve, GPA ou SAV Payant.'); return; }
+  if(!residence){ alert('Renseignez la résidence / adresse.'); return; }
+  if(!sigC.dataset.signed){ alert('La signature du client est requise.'); return; }
 
-  // En-tête
-  pdf.setFillColor(...DARK);pdf.rect(0,0,W,26,'F');
-  pdf.setFillColor(...TEAL);pdf.rect(0,26,W,2,'F');
-  pdf.setTextColor(255);pdf.setFont('helvetica','bold');
-  pdf.setFontSize(16);pdf.text('GROUPE KYRIEL',M,12);
-  pdf.setFontSize(7);pdf.setFont('helvetica','normal');pdf.text('EXPERTS EN MENUISERIE',M,18);
-  pdf.setFontSize(14);pdf.setFont('helvetica','bold');pdf.text('QUITUS DE LEVÉE',W-M,15,{align:'right'});
-  y=36;pdf.setTextColor(...INK);
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p','mm','a4');
+  const W = 210, M = 16;
+  let y = 18;
 
-  // Type
+  /* En-tête */
+  pdf.setFillColor(46,117,182);
+  pdf.rect(0,0,W,24,'F');
+  pdf.setTextColor(255); pdf.setFont('helvetica','bold');
+  pdf.setFontSize(15); pdf.text('GROUPE KYRIEL', M, 11);
+  pdf.setFontSize(7);  pdf.setFont('helvetica','normal');
+  pdf.text('EXPERTS EN MENUISERIE', M, 16);
+  pdf.setFontSize(14); pdf.setFont('helvetica','bold');
+  pdf.text('QUITUS DE LEVÉE', W-M, 14, {align:'right'});
+
+  y = 34;
+  pdf.setTextColor(26,36,48);
+
+  /* Type */
   pdf.setFontSize(10);
   ['Réserve','GPA','SAV Payant'].forEach((t,i)=>{
-    const x=M+i*62;pdf.setDrawColor(...TEAL);
-    if(t===typeSel){pdf.setFillColor(...TEAL);pdf.rect(x,y-4,5,5,'FD');pdf.setTextColor(255);pdf.setFontSize(7);pdf.text('X',x+1.4,y-0.2);pdf.setFontSize(10);pdf.setTextColor(...INK);}
+    const x = M + i*62;
+    pdf.setDrawColor(46,117,182);
+    if(t===typeSel){ pdf.setFillColor(46,117,182); pdf.rect(x,y-4,5,5,'FD'); pdf.setTextColor(255); pdf.setFontSize(7); pdf.text('X',x+1.4,y-0.2); pdf.setFontSize(10); pdf.setTextColor(26,36,48); }
     else pdf.rect(x,y-4,5,5);
-    pdf.text(t,x+8,y);
+    pdf.text(t, x+8, y);
   });
-  y+=11;
+  y += 11;
 
-  // Infos
-  const rdvRaw=document.getElementById('rdv').value;
-  let rdvTxt='';
-  if(rdvRaw){const d=new Date(rdvRaw);rdvTxt=d.toLocaleDateString('fr-FR')+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}
-  [['RÉSIDENCE / ADRESSE',residence],['LOGEMENT',document.getElementById('logement').value],['DATE / HEURE RDV',rdvTxt],["NOM DE L'OCCUPANT",occupant]].forEach(([k,v])=>{
-    pdf.setFont('helvetica','bold');pdf.setTextColor(...GRAY);pdf.setFontSize(10);pdf.text(k+' :',M,y);
-    pdf.setFont('helvetica','normal');pdf.setTextColor(...INK);pdf.text(v||'—',M+52,y);
-    pdf.setDrawColor(200,210,220);pdf.line(M+52,y+1.3,W-M,y+1.3);y+=8;
+  /* Infos */
+  const rdvRaw = document.getElementById('rdv').value;
+  let rdvTxt = '';
+  if(rdvRaw){ const d = new Date(rdvRaw); rdvTxt = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
+  const info = [
+    ['RÉSIDENCE / ADRESSE', residence],
+    ['LOGEMENT', document.getElementById('logement').value],
+    ['H / RDV', rdvTxt],
+    ['Nom de l\'occupant', occupant],
+    ['Tél.', document.getElementById('tel').value],
+  ];
+  pdf.setFontSize(10);
+  info.forEach(([k,v])=>{
+    pdf.setFont('helvetica','bold'); pdf.text(k+' :', M, y);
+    pdf.setFont('helvetica','normal'); pdf.text(v || '—', M+52, y);
+    pdf.setDrawColor(200,210,220); pdf.line(M+52, y+1.3, W-M, y+1.3);
+    y += 8;
   });
-  y+=4;
+  y += 3;
 
-  // ── TÂCHES : chaque tâche = bloc description + bande statuts ──
-  let taskNum=0;
+  /* Tableau tâches */
+  const cols = [{t:'Tâches',w:118},{t:'Fait',w:20},{t:'Commentaires',w:40}];
+  let x = M;
+  pdf.setFillColor(46,117,182); pdf.setTextColor(255); pdf.setFont('helvetica','bold'); pdf.setFontSize(9);
+  cols.forEach(c=>{ pdf.rect(x,y,c.w,8,'F'); pdf.text(c.t, x+2, y+5.4); x+=c.w; });
+  y += 8;
+  pdf.setTextColor(26,36,48); pdf.setFont('helvetica','normal');
+
   document.querySelectorAll('.task').forEach(t=>{
-    const desc=t.querySelector('textarea').value.trim();
-    if(!desc)return;
-    taskNum++;
-    const fait=t.dataset.fait||'';
-    const inter=t.dataset.inter||'';
-    const cmd=t.dataset.cmd||'';
+    const desc = t.querySelector('textarea').value.trim();
+    if(!desc) return;
+    const fait = t.dataset.fait || '';
+    const lines = pdf.splitTextToSize(desc, 114);
+    const h = Math.max(10, lines.length*4.5 + 4);
+    if(y+h > 230){ pdf.addPage(); y = 20; }
+    let cx = M;
+    pdf.setDrawColor(160,175,190);
+    pdf.rect(cx,y,118,h); pdf.text(lines, cx+2, y+5); cx+=118;
+    pdf.rect(cx,y,20,h);
+    if(fait==='OUI'){ pdf.setTextColor(30,142,90); pdf.setFont('helvetica','bold'); }
+    if(fait==='NON'){ pdf.setTextColor(192,57,43); pdf.setFont('helvetica','bold'); }
+    pdf.text(fait, cx+10, y+h/2+1.5, {align:'center'});
+    pdf.setTextColor(26,36,48); pdf.setFont('helvetica','normal');
+    cx+=20;
+    pdf.rect(cx,y,40,h);
+    y += h;
+  });
+  y += 8;
 
-    const descLines=pdf.splitTextToSize(desc,W-2*M-12);
-    const descH=Math.max(9,descLines.length*4.5+5);
-    const statH=11;
-    const totalH=descH+statH;
-    if(y+totalH>232){pdf.addPage();y=20;}
+  /* Attestation */
+  if(y > 210){ pdf.addPage(); y = 20; }
+  pdf.setFontSize(9.5);
+  const att = `Monsieur, Madame ${occupant||'—'} constate(nt) que l'entreprise KYRIEL a bien effectué les travaux de reprise mentionnés ci-dessus, ce qui constitue la levée des réserves.`;
+  const attLines = pdf.splitTextToSize(att, W-2*M);
+  pdf.text(attLines, M, y);
+  y += attLines.length*4.5 + 6;
 
-    // Bande description (fond clair)
-    pdf.setFillColor(234,242,246);pdf.rect(M,y,W-2*M,descH,'F');
-    pdf.setDrawColor(180,195,205);pdf.setLineWidth(0.3);pdf.rect(M,y,W-2*M,descH);
-    // Badge numéro
-    pdf.setFillColor(...TEAL);pdf.rect(M,y,9,descH,'F');
-    pdf.setTextColor(255);pdf.setFont('helvetica','bold');pdf.setFontSize(8);
-    pdf.text(String(taskNum),M+4.5,y+descH/2+1.5,{align:'center'});
-    // Texte description
-    pdf.setTextColor(...INK);pdf.setFont('helvetica','normal');pdf.setFontSize(9.5);
-    pdf.text(descLines,M+12,y+5);
-    y+=descH;
+  /* Commentaires */
+  const comments = document.getElementById('comments').value.trim();
+  const commentsClient = document.getElementById('commentsClient').value.trim();
+  [[comments,'COMMENTAIRE KYRIEL'],[commentsClient,'COMMENTAIRE DU CLIENT']].forEach(([txt,titre])=>{
+    if(!txt) return;
+    if(y > 215){ pdf.addPage(); y = 20; }
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
+    pdf.setTextColor(31,83,136);
+    pdf.text(titre, M, y); y += 5;
+    pdf.setTextColor(26,36,48); pdf.setFont('helvetica','normal'); pdf.setFontSize(9.5);
+    const comLines = pdf.splitTextToSize(txt, W-2*M);
+    pdf.text(comLines, M, y);
+    y += comLines.length*4.5 + 6;
+  });
 
-    // Bande statuts (3 cellules égales) — label + valeur dans chaque cellule
-    const sw=(W-2*M)/3;
-    const statuts=[
-      {label:'Fait ?',val:fait,alertOui:false},
-      {label:'Nouvelle inter. à prévoir ?',val:inter,alertOui:true},
-      {label:'Commander des éléments ?',val:cmd,alertOui:true},
-    ];
-    statuts.forEach((s,i)=>{
-      const sx=M+i*sw;
-      pdf.setFillColor(248,250,252);pdf.rect(sx,y,sw,statH,'F');
-      pdf.setDrawColor(180,195,205);pdf.rect(sx,y,sw,statH);
-      // Label
-      pdf.setFont('helvetica','normal');pdf.setFontSize(6.5);pdf.setTextColor(...GRAY);
-      pdf.text(s.label,sx+3,y+4);
-      // Valeur
-      if(s.val){
-        const isAlert=(s.alertOui&&s.val==='OUI')||(!s.alertOui&&s.val==='NON');
-        const col=isAlert?[192,57,43]:[30,142,90];
-        pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(...col);
-        pdf.text(s.val,sx+sw-3,y+9,{align:'right'});
+  /* Signatures */
+  if(y > 205){ pdf.addPage(); y = 20; }
+  const sw = (W-2*M-6)/2, sh = 38;
+  pdf.setFontSize(8.5); pdf.setDrawColor(120,140,160);
+  pdf.rect(M,y,sw,sh);
+  pdf.text('Signature du représentant de', M+2, y+5);
+  pdf.text('KYRIEL', M+2, y+9);
+  pdf.rect(M+sw+6,y,sw,sh);
+  pdf.text('Signature du client — « Bon pour', M+sw+8, y+5);
+  pdf.text('travaux exécutés » le ' + new Date().toLocaleDateString('fr-FR'), M+sw+8, y+9);
+
+  const sigK = document.getElementById('sigK');
+  if(sigK.dataset.signed) pdf.addImage(sigK.toDataURL('image/png'),'PNG', M+4, y+11, sw-8, sh-15);
+  pdf.addImage(sigC.toDataURL('image/png'),'PNG', M+sw+10, y+11, sw-8, sh-15);
+  y += sh + 8;
+
+  /* Pied légal */
+  if(y > 262){ pdf.addPage(); y = 20; }
+  pdf.setFontSize(6.3); pdf.setTextColor(91,107,124);
+  const leg1 = 'KYRIEL CONSTRUCTION À RENNES — Enseigne de l\'ENTREPRISE MARTIN — 4 boulevard du Scorff 35740 PACÉ — 02 99 66 79 76 [CHOIX N°5] — construction.rennes@groupe-kyriel.fr — SAS ENTREPRISE MARTIN au capital de 51 560 € — SIREN : 487 899 494 / APE : 4332A — TVA : FR19487899494';
+  const leg2 = 'KYRIEL CONSTRUCTION À NANTES — Enseigne de M ATLANTIQUE — 6 rue Carré Norgands 44880 SAUTRON — 02 99 66 79 76 [CHOIX N°6] — construction.nantes@groupe-kyriel.fr — SAS M ATLANTIQUE au capital de 10 000 € — SIREN : 833 922 958 / APE : 4332A — TVA : FR79833922958';
+  pdf.text(pdf.splitTextToSize(leg1, W-2*M), M, 276);
+  pdf.text(pdf.splitTextToSize(leg2, W-2*M), M, 285);
+
+  /* Photos en annexe : 2 par page */
+  if(photos.length){
+    photos.forEach((p,i)=>{
+      if(i % 2 === 0){
+        pdf.addPage();
+        pdf.setFillColor(46,117,182); pdf.rect(0,0,W,14,'F');
+        pdf.setTextColor(255); pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
+        pdf.text('ANNEXE PHOTOS — ' + residence, M, 9);
+        pdf.setTextColor(26,36,48);
       }
+      const slotY = (i % 2 === 0) ? 22 : 155;
+      const maxW = W - 2*M, maxH = 125;
+      const r = Math.min(maxW/p.w, maxH/p.h);
+      const dw = p.w*r, dh = p.h*r;
+      pdf.addImage(p.data,'JPEG', M + (maxW-dw)/2, slotY, dw, dh);
+      pdf.setFontSize(8); pdf.setTextColor(91,107,124);
+      pdf.text('Photo ' + (i+1), M, slotY + dh + 5);
+      pdf.setTextColor(26,36,48);
     });
-    y+=statH+3;
-  });
-  y+=4;
+  }
 
-  // Attestation
-  if(y>210){pdf.addPage();y=20;}
-  pdf.setFillColor(234,242,246);pdf.rect(M,y-2,W-2*M,16,'F');
-  pdf.setFillColor(...TEAL);pdf.rect(M,y-2,3,16,'F');
-  pdf.setFont('helvetica','normal');pdf.setFontSize(9.5);pdf.setTextColor(...INK);
-  const att=`Monsieur, Madame ${occupant||'—'} constate(nt) que l'entreprise KYRIEL CONSTRUCTION a bien effectué les travaux de reprise mentionnés ci-dessus, ce qui constitue la levée des réserves.`;
-  pdf.text(pdf.splitTextToSize(att,W-2*M-8),M+5,y+3.5);
-  y+=20;
+  /* Nom de fichier */
+  const dt = new Date();
+  const stamp = dt.getFullYear().toString().slice(2) + String(dt.getMonth()+1).padStart(2,'0') + String(dt.getDate()).padStart(2,'0');
+  const resClean = residence.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase();
+  const fname = `${resClean}_QUITUS_${typeSel.replace(' ','')}_${stamp}.pdf`;
 
-  // Commentaires
-  [[ document.getElementById('comments').value.trim(),'COMMENTAIRE KYRIEL'],[document.getElementById('commentsClient').value.trim(),'COMMENTAIRE DU CLIENT']].forEach(([txt,titre])=>{
-    if(!txt)return;
-    if(y>215){pdf.addPage();y=20;}
-    pdf.setFont('helvetica','bold');pdf.setFontSize(10);pdf.setTextColor(...TEAL);pdf.text(titre,M,y);y+=5;
-    pdf.setTextColor(...INK);pdf.setFont('helvetica','normal');pdf.setFontSize(9.5);
-    const cl=pdf.splitTextToSize(txt,W-2*M);pdf.text(cl,M,y);y+=cl.length*4.5+6;
-  });
+  /* Partage natif mobile, sinon téléchargement blob */
+  const blob = pdf.output('blob');
+  const file = new File([blob], fname, {type:'application/pdf'});
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    navigator.share({files:[file], title:fname}).catch(()=>{});
+  }else{
+    try{
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = fname;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 4000);
+    }catch(err){
+      window.open(pdf.output('bloburl'), '_blank');
+    }
+  }
 
-  // Signatures
-  if(y>205){pdf.addPage();y=20;}
-  const sw2=(W-2*M-6)/2,sh=38;
-  pdf.setFontSize(8.5);pdf.setDrawColor(...TEAL);pdf.setLineWidth(0.4);
-  pdf.rect(M,y,sw2,sh);pdf.setTextColor(...GRAY);pdf.setFont('helvetica','bold');
-  pdf.text('Signature du représentant de',M+2,y+5);pdf.text('KYRIEL CONSTRUCTION',M+2,y+9);
-  pdf.rect(M+sw2+6,y,sw2,sh);
-  pdf.text('Signature du client — « Bon pour',M+sw2+8,y+5);
-  pdf.text('travaux exécutés » le '+new Date().toLocaleDateString('fr-FR'),M+sw2+8,y+9);
-  const sigK=document.getElementById('sigK');
-  if(sigK.dataset.signed)pdf.addImage(sigK.toDataURL('image/png'),'PNG',M+4,y+11,sw2-8,sh-15);
-  pdf.addImage(sigC.toDataURL('image/png'),'PNG',M+sw2+10,y+11,sw2-8,sh-15);
-  y+=sh+8;
-
-  // Photos
-  if(photos.length){photos.forEach((p,i)=>{
-    if(i%2===0){pdf.addPage();pdf.setFillColor(...DARK);pdf.rect(0,0,W,16,'F');pdf.setFillColor(...TEAL);pdf.rect(0,16,W,2,'F');pdf.setTextColor(255);pdf.setFont('helvetica','bold');pdf.setFontSize(10);pdf.text('ANNEXE PHOTOS — '+residence,M,11);pdf.setTextColor(...INK);}
-    const slotY=(i%2===0)?24:155,maxW=W-2*M,maxH=122,r=Math.min(maxW/p.w,maxH/p.h);
-    pdf.addImage(p.data,'JPEG',M+(maxW-p.w*r)/2,slotY,p.w*r,p.h*r);
-    pdf.setFontSize(8);pdf.setTextColor(...GRAY);pdf.text('Photo '+(i+1),M,slotY+p.h*r+5);pdf.setTextColor(...INK);
-  });}
-
-  // Pied de page
-  const nb=pdf.getNumberOfPages();
-  for(let p=1;p<=nb;p++){pdf.setPage(p);pdf.setDrawColor(...TEAL);pdf.setLineWidth(0.3);pdf.line(0,288,W,288);pdf.setTextColor(...GRAY);pdf.setFontSize(7.5);pdf.setFont('helvetica','normal');pdf.text('Groupe Kyriel — groupe-kyriel.fr',W/2,293,{align:'center'});pdf.text('Page '+p+'/'+nb,W-M,293,{align:'right'});}
-
-  // Export
-  const dt=new Date();
-  const stamp=dt.getFullYear().toString().slice(2)+String(dt.getMonth()+1).padStart(2,'0')+String(dt.getDate()).padStart(2,'0');
-  const fname=residence.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30).toUpperCase()+'_QUITUS_'+typeSel.replace(' ','')+'_'+stamp+'.pdf';
-  const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const blob=pdf.output('blob');
-  const file=new File([blob],fname,{type:'application/pdf'});
-  if(isMobile&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:fname}).catch(()=>{});}
-  else{try{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},4000);}catch(e){window.open(pdf.output('bloburl'),'_blank');}}
-  const toast=document.getElementById('toast');
-  toast.textContent=isMobile?'PDF prêt à partager ✔':'PDF téléchargé ✔';
-  toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 2600);
 }
 </script>
 </body>
