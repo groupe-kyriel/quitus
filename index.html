@@ -253,13 +253,18 @@ function genPDF(){
       // Label
       pdf.setFont('helvetica','normal');pdf.setFontSize(6.5);pdf.setTextColor(...GRAY);
       pdf.text(s.label,sx+3,y+4);
-      // Valeur
-      if(s.val){
-        const isAlert=(s.alertOui&&s.val==='OUI')||(!s.alertOui&&s.val==='NON');
-        const col=isAlert?[192,57,43]:[30,142,90];
-        pdf.setFont('helvetica','bold');pdf.setFontSize(9);pdf.setTextColor(...col);
-        pdf.text(s.val,sx+sw-3,y+9,{align:'right'});
-      }
+      // Cases à cocher OUI / NON (style Type d'intervention)
+      const boxY=y+5.6,boxS=3.4;
+      [['OUI',sx+3],['NON',sx+sw/2]].forEach(([val,bx])=>{
+        pdf.setDrawColor(...TEAL);
+        if(s.val===val){
+          pdf.setFillColor(...TEAL);pdf.rect(bx,boxY,boxS,boxS,'FD');
+          pdf.setTextColor(255);pdf.setFontSize(6);pdf.setFont('helvetica','bold');
+          pdf.text('X',bx+boxS/2,boxY+boxS-0.9,{align:'center'});
+        }else pdf.rect(bx,boxY,boxS,boxS);
+        pdf.setFont('helvetica','normal');pdf.setFontSize(7.5);pdf.setTextColor(...INK);
+        pdf.text(val,bx+boxS+1.5,boxY+boxS-0.6);
+      });
     });
     y+=statH+3;
   });
@@ -316,11 +321,15 @@ function genPDF(){
   const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const blob=pdf.output('blob');
   const file=new File([blob],fname,{type:'application/pdf'});
-  if(isMobile&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:fname}).catch(()=>{});}
-  else{try{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},4000);}catch(e){window.open(pdf.output('bloburl'),'_blank');}}
   const toast=document.getElementById('toast');
-  toast.textContent=isMobile?'PDF prêt à partager ✔':'PDF téléchargé ✔';
-  toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);
+  function download(){try{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},4000);}catch(e){window.open(pdf.output('bloburl'),'_blank');}
+    toast.textContent=isMobile?'PDF enregistré dans Téléchargements ✔':'PDF téléchargé ✔';
+    toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),4000);}
+  if(isMobile&&navigator.canShare&&navigator.canShare({files:[file]})){
+    navigator.share({files:[file],title:fname}).then(()=>{
+      toast.textContent='PDF partagé ✔';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);
+    }).catch(()=>{download();});
+  }else{download();}
 }
 </script>
 </body>
